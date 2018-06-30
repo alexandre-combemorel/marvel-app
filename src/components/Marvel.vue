@@ -1,19 +1,19 @@
 <template>
   <div class="marvel-app">
     <div class="marvel-app__content__wrapper">
-      <div class="marvel-app__logo__wrapper"><img src="../assets/marvel-logo.png" alt="Marvel logo"/></div>
+      <div class="marvel-app__logo__wrapper" @click="backHome"><img src="../assets/marvel-logo.png" alt="Marvel logo"/></div>
 
       <div class="marvel-app__content__wrapper">
 
-        <div class="marvel-app__error"><error v-if="$store.state.errorHandling.errorActive"></error></div>
-        <div class="marvel-app__loader" v-if="$store.state.isLoading"><loader></loader></div>
+        <div v-if="$store.state.errorHandling.errorActive" class="marvel-app__error"><error></error></div>
+        <div v-if="$store.state.isLoading" class="marvel-app__loader"><loader></loader></div>
 
-        <div class="marvel-app__content__wrapper__listing">
+        <div v-if="displayListing" class="marvel-app__content__wrapper__listing">
           <search></search>
           <listing></listing>
         </div>
-
         <div v-if="displaySingleView" class="marvel-app__content__wrapper__single">
+          <div class="marvel-app__content__wrapper__single__back" @click="backHistory">BACK</div>
           <single-view></single-view>
         </div>
 
@@ -41,8 +41,19 @@ export default {
     SingleView,
   },
   computed: {
+    displayListing() {
+      return this.$route.path.indexOf(CONST.SEARCH_LISTING) !== -1 || this.$route.path === '/';
+    },
     displaySingleView() {
       return this.$route.path.indexOf(CONST.SEARCH_SINGLE) !== -1;
+    },
+  },
+  methods: {
+    backHome() {
+      this.$router.push('/');
+    },
+    backHistory() {
+      window.history.back();
     },
   },
 };
@@ -60,6 +71,7 @@ export default {
   flex-direction: column;
   align-items: stretch;
   &__logo__wrapper {
+    cursor: pointer;
     text-align: center;
     margin: $stack-xl 0;
     img {
@@ -68,6 +80,13 @@ export default {
   }
   &__content__wrapper, &__loader, &__error {
     transition: all 1s linear;
+  }
+  &__content__wrapper__single__back {
+    font-size: 2em;
+    margin: $inset-l;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
   }
 }
 </style>

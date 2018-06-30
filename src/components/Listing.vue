@@ -14,23 +14,21 @@ export default {
   components: {
     Tile,
   },
-  data() {
-    return {
-      tileCollection: null,
-    };
-  },
   watch: {
     $route() {
       this.search();
     },
   },
+  mounted() {
+    this.search();
+  },
   computed: {
     listingToDisplay() {
       const { path } = this.$route;
-      if (path.indexOf(`/${CONST.SEARCH_LISTING}/${CONST.TYPE_COMIC}`) > -1) {
-        return this.$store.state.collectionMarvelComics;
+      if (path.indexOf(`/${CONST.SEARCH_LISTING}/${CONST.TYPE_COMIC}`) !== -1) {
+        return this.$store.state.search.collectionMarvelComics;
       }
-      return this.$store.state.collectionMarvelCharacters;
+      return this.$store.state.search.collectionMarvelCharacters;
     },
   },
   methods: {
@@ -40,24 +38,46 @@ export default {
       const { key } = this.$route.params;
 
       if (search === CONST.SEARCH_LISTING) {
+        this.$store.commit('loadingOn');
+        this.$store.commit('clearErrorMessage');
         if (type === CONST.TYPE_COMIC) {
-          this.$store.commit('loadingOn');
-          this.$store.commit('clearErrorMessage');
-          API.getMarvelComics(key)
-            .then((data) => {
-              this.$store.commit('loadingOff');
-              if (data.count > 0) {
-                this.$store.commit('saveLastSearch', { type: CONST.TYPE_COMIC, data: data.results });
-              } else {
-                this.$store.commit('setErrorMessage', 'No marvel comics found');
-              }
-            })
-            .catch(() => {
-              this.$store.commit('loadingOff');
-              this.$store.commit('setErrorMessage', 'Server not responding');
-            });
+          this.getComics(key);
+        } else {
+          this.getCharacters(key);
         }
       }
+    },
+    getComics(key) {
+      API.getMarvelComics(key)
+        .then((data) => {
+          this.$store.commit('loadingOff');
+          if (data.count > 0) {
+            this.$store.commit('saveLastSearch', { type: CONST.TYPE_COMIC, data: data.results });
+          } else {
+            this.$store.commit('saveLastSearch', { type: CONST.TYPE_COMIC, data: [] });
+            this.$store.commit('setErrorMessage', CONST.ERROR_NORESULTS_COMICS);
+          }
+        })
+        .catch(() => {
+          this.$store.commit('loadingOff');
+          this.$store.commit('setErrorMessage', CONST.ERROR_NETWORK);
+        });
+    },
+    getCharacters(key) {
+      API.getMarvelCharacters(key)
+        .then((data) => {
+          this.$store.commit('loadingOff');
+          if (data.count > 0) {
+            this.$store.commit('saveLastSearch', { type: CONST.TYPE_CHARACTER, data: data.results });
+          } else {
+            this.$store.commit('saveLastSearch', { type: CONST.TYPE_CHARACTER, data: [] });
+            this.$store.commit('setErrorMessage', CONST.ERROR_NORESULTS_CHARACTERS);
+          }
+        })
+        .catch(() => {
+          this.$store.commit('loadingOff');
+          this.$store.commit('setErrorMessage', CONST.ERROR_NETWORK);
+        });
     },
   },
 };

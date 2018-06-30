@@ -1,14 +1,16 @@
 <template>
-  <div class="tile" @click="displayTile(tile.format, tile.id)">
+  <div class="tile" @click="displayTile(tile.id)">
     <div class="tile__img"><img :src="image"/></div>
     <div class="tile__text">
-      <div class="tile__text__title">{{ tile.title }}</div>
-      <div class="tile__text__description">{{ tile.description.substr(0, 200) }}...</div>
+      <div class="tile__text__title">{{ title }}</div>
+      <div class="tile__text__description">{{ description }}</div>
     </div>
   </div>
 </template>
 
 <script>
+import CONST from '../../config/CONST';
+
 export default {
   name: 'Tile',
   props: ['tile'],
@@ -16,11 +18,17 @@ export default {
     image() {
       return `${this.tile.thumbnail.path}/portrait_small.${this.tile.thumbnail.extension}`;
     },
+    title() {
+      return this.tile.title !== undefined ? this.tile.title : this.tile.name;
+    },
+    description() {
+      return this.tile.description.length > 300 ? `${this.tile.description.substr(0, 200)}...` : '';
+    },
   },
   methods: {
-    displayTile(type, id) {
-      const typeLowerCase = type.toLowerCase();
-      this.$router.push(`/searchId/${typeLowerCase}/${id}`);
+    displayTile(id) {
+      const { lastSearchType } = this.$store.state.search;
+      this.$router.push(`/${CONST.SEARCH_SINGLE}/${lastSearchType}/${id}`);
     },
   },
 };

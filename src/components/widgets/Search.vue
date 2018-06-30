@@ -19,8 +19,8 @@ export default {
   data() {
     return {
       CONST,
-      query: '',
-      type: CONST.TYPE_COMIC,
+      query: this.$route.params.key || '',
+      type: this.$route.params.type || CONST.TYPE_COMIC,
     };
   },
   methods: {

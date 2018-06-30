@@ -12,8 +12,11 @@ const store = new Vuex.Store({
       errorMessage: null,
       errorActive: false,
     },
-    collectionMarvelComics: [],
-    collectionMarvelCharacters: [],
+    search: {
+      lastSearchType: null,
+      collectionMarvelComics: [],
+      collectionMarvelCharacters: [],
+    },
   },
   mutations: {
     loadingOn(state) {
@@ -24,9 +27,11 @@ const store = new Vuex.Store({
     },
     saveLastSearch(state, data) {
       if (data.type === CONST.TYPE_COMIC) {
-        state.collectionMarvelComics = data.data;
+        state.search.lastSearchType = CONST.TYPE_COMIC;
+        state.search.collectionMarvelComics = data.data;
       } else {
-        state.collectionMarvelCharacters = data.data;
+        state.search.lastSearchType = CONST.TYPE_CHARACTER;
+        state.search.collectionMarvelCharacters = data.data;
       }
     },
     setErrorMessage(state, message) {
