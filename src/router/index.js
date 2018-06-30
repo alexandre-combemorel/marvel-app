@@ -7,7 +7,7 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/:search?/:type?/:key?',
       name: 'Marvel',
       component: Marvel,
     },
