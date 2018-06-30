@@ -23,6 +23,7 @@ export default {
   props: ['comic'],
   computed: {
     image() {
+      // Marvel API ask us to build the image path fetch from the API to select the right format
       return `${this.comic.thumbnail.path}/portrait_uncanny.${this.comic.thumbnail.extension}`;
     },
   },

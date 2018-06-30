@@ -5,6 +5,7 @@
 </template>
 
 <script>
+// This component is active when we are waiting for an API answer
 export default {
   name: 'Loader',
 };

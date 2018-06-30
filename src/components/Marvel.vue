@@ -23,12 +23,14 @@
 </template>
 
 <script>
+// COMPONENTS
 import Search from '@/components/widgets/Search';
 import Loader from '@/components/widgets/Loader';
 import Error from '@/components/widgets/Error';
 import Listing from '@/components/Listing';
 import SingleView from '@/components/SingleView';
 
+// LIBRARIES OR UTILITIES
 import CONST from '../config/CONST';
 
 export default {
@@ -42,13 +44,16 @@ export default {
   },
   computed: {
     displayListing() {
+      // this computed property make sure the Listing is display only with a root path or when the searchListing is Active
       return this.$route.path.indexOf(CONST.SEARCH_LISTING) !== -1 || this.$route.path === '/';
     },
     displaySingleView() {
+      // this computed property make sure the single view is display when we want to display a comic or a character
       return this.$route.path.indexOf(CONST.SEARCH_SINGLE) !== -1;
     },
   },
   methods: {
+    // This 2 function needs to be improve to properly manage when a user come straight away with url parameters or not
     backHome() {
       this.$router.push('/');
     },

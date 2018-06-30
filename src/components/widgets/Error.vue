@@ -5,6 +5,7 @@
 </template>
 
 <script>
+// Just a component to display errors on the page
 export default {
   name: 'Error',
 };

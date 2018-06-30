@@ -9,6 +9,7 @@
 </template>
 
 <script>
+// LIBRARIES OR UTILITIES
 import CONST from '../../config/CONST';
 
 export default {
@@ -16,17 +17,21 @@ export default {
   props: ['tile'],
   computed: {
     image() {
+      // Marvel API ask us to build the image path fetch from the API to select the right format
       return `${this.tile.thumbnail.path}/portrait_small.${this.tile.thumbnail.extension}`;
     },
     title() {
+      // In this component we want to display Comic and Character, the computed property make sure to select the right one
       return this.tile.title !== undefined ? this.tile.title : this.tile.name;
     },
     description() {
+      // if the description too big we truck it
       return this.tile.description.length > 300 ? `${this.tile.description.substr(0, 200)}...` : '';
     },
   },
   methods: {
     displayTile(id) {
+      // here we check what is the last search type which as been made to push the right type path and activate the right single view
       const { lastSearchType } = this.$store.state.search;
       this.$router.push(`/${CONST.SEARCH_SINGLE}/${lastSearchType}/${id}`);
     },

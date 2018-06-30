@@ -12,6 +12,7 @@
 </template>
 
 <script>
+// LIBRARIES OR UTILITIES
 import CONST from '../../config/CONST';
 
 export default {
@@ -19,12 +20,14 @@ export default {
   data() {
     return {
       CONST,
+      // we prefill the form with arguments present in the URL
       query: this.$route.params.key || '',
       type: this.$route.params.type || CONST.TYPE_COMIC,
     };
   },
   methods: {
     search() {
+      // When we submit the form, we simply create the query based on the form and use the router to switch to the right state of the app
       this.$router.push(`/${CONST.SEARCH_LISTING}/${this.type}/${this.query}`);
     },
   },

@@ -20,6 +20,7 @@ export default {
   props: ['character'],
   computed: {
     image() {
+      // Marvel API ask us to build the image path fetch from the API to select the right format
       return `${this.character.thumbnail.path}/portrait_uncanny.${this.character.thumbnail.extension}`;
     },
   },
