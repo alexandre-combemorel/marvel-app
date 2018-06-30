@@ -1,12 +1,13 @@
 <template>
   <div class="listing">
-    <tile v-for="tile in $store.state.collectionMarvel" :key="tile.id" :tile="tile"></tile>
+    <tile v-for="tile in listingToDisplay" :key="tile.id" :tile="tile"></tile>
   </div>
 </template>
 
 <script>
 import Tile from '@/components/widgets/Tile';
 import API from '../services/apiMapper';
+import CONST from '../config/CONST';
 
 export default {
   name: 'Listing',
@@ -23,26 +24,36 @@ export default {
       this.search();
     },
   },
+  computed: {
+    listingToDisplay() {
+      const { path } = this.$route;
+      if (path.indexOf(`/${CONST.SEARCH_LISTING}/${CONST.TYPE_COMIC}`) > -1) {
+        return this.$store.state.collectionMarvelComics;
+      }
+      return this.$store.state.collectionMarvelCharacters;
+    },
+  },
   methods: {
     search() {
       const { search } = this.$route.params;
       const { type } = this.$route.params;
       const { key } = this.$route.params;
 
-      if (search === 'search') {
-        if (type === 'comics') {
-          this.$store.commit('loading');
+      if (search === CONST.SEARCH_LISTING) {
+        if (type === CONST.TYPE_COMIC) {
+          this.$store.commit('loadingOn');
+          this.$store.commit('clearErrorMessage');
           API.getMarvelComics(key)
             .then((data) => {
-              this.$store.commit('loading');
+              this.$store.commit('loadingOff');
               if (data.count > 0) {
-                this.$store.commit('saveLastSearch', data.results);
+                this.$store.commit('saveLastSearch', { type: CONST.TYPE_COMIC, data: data.results });
               } else {
                 this.$store.commit('setErrorMessage', 'No marvel comics found');
               }
             })
             .catch(() => {
-              this.$store.commit('loading');
+              this.$store.commit('loadingOff');
               this.$store.commit('setErrorMessage', 'Server not responding');
             });
         }
@@ -60,5 +71,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  @media (min-width: $break-mobile) {
+  }
 }
 </style>

@@ -36,3 +36,5 @@ $inline-s:   nth(nth($standards, 3), 2);
 $inline-m:   nth(nth($standards, 4), 2);
 $inline-l:   nth(nth($standards, 5), 2);
 $inline-xl:  nth(nth($standards, 6), 2);
+
+$break-mobile: 1024px;

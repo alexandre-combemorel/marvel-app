@@ -1,6 +1,6 @@
 <template>
   <div class="error">
-    <div class="error__message">{{ $store.errorHandling.errorMessage }}</div>
+    <div class="error__message">{{ $store.state.errorHandling.errorMessage }}</div>
   </div>
 </template>
 
@@ -27,4 +27,3 @@ export default {
   }
 }
 </style>
-

@@ -3,8 +3,8 @@
     <div class="search__wrapper">
       <input class="search__wrapper__field" type="text" placeholder="Enter key words" v-model="query"/>
       <div class="search__wrapper__radio__wrapper">
-        <input class="search__wrapper__radio" type="radio" id="comic" value="comics" v-model="type"><label class="search__wrapper__radio__label" for="comic">Comic</label>
-        <input class="search__wrapper__radio" type="radio" id="character" value="characters" v-model="type"><label class="search__wrapper__radio__label" for="character">Character</label>
+        <input class="search__wrapper__radio" type="radio" id="comic" :value="CONST.TYPE_COMIC" v-model="type"><label class="search__wrapper__radio__label" for="comic">Comic</label>
+        <input class="search__wrapper__radio" type="radio" id="character" :value="CONST.TYPE_CHARACTER" v-model="type"><label class="search__wrapper__radio__label" for="character">Character</label>
         <button class="search__wrapper__button" @click="search">Search</button>
       </div>
     </div>
@@ -12,17 +12,20 @@
 </template>
 
 <script>
+import CONST from '../../config/CONST';
+
 export default {
   name: 'Search',
   data() {
     return {
+      CONST,
       query: '',
-      type: 'comics',
+      type: CONST.TYPE_COMIC,
     };
   },
   methods: {
     search() {
-      this.$router.push(`/search/${this.type}/${this.query}`);
+      this.$router.push(`/${CONST.SEARCH_LISTING}/${this.type}/${this.query}`);
     },
   },
 };

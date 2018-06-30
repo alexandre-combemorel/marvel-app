@@ -3,7 +3,7 @@
     <div class="tile__img"><img :src="image"/></div>
     <div class="tile__text">
       <div class="tile__text__title">{{ tile.title }}</div>
-      <div class="tile__text__description">{{ tile.description }}</div>
+      <div class="tile__text__description">{{ tile.description.substr(0, 200) }}...</div>
     </div>
   </div>
 </template>
@@ -31,7 +31,10 @@ export default {
 
 .tile {
   display: flex;
-  flex: 0 0 20%;
+  flex: 0 0 50%;
+  @media (min-width: $break-mobile) {
+    flex: 0 0 20%;
+  }
   border-radius: 5px;
   margin: $inset-s;
   padding: $inset-s;
@@ -44,6 +47,7 @@ export default {
     &__title {
       color: $secondary;
       font-weight: bold;
+      margin-bottom: $stack-s;
     }
     &__description {
       color: $secondary;

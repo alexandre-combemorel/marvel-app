@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import CONST from '../config/CONST';
 
 // declare store usage
 Vue.use(Vuex);
@@ -11,14 +12,22 @@ const store = new Vuex.Store({
       errorMessage: null,
       errorActive: false,
     },
-    collectionMarvel: [],
+    collectionMarvelComics: [],
+    collectionMarvelCharacters: [],
   },
   mutations: {
-    loading(state) {
-      state.isLoading = !state.isLoading;
+    loadingOn(state) {
+      state.isLoading = true;
+    },
+    loadingOff(state) {
+      state.isLoading = false;
     },
     saveLastSearch(state, data) {
-      state.collectionMarvel = data;
+      if (data.type === CONST.TYPE_COMIC) {
+        state.collectionMarvelComics = data.data;
+      } else {
+        state.collectionMarvelCharacters = data.data;
+      }
     },
     setErrorMessage(state, message) {
       state.errorHandling.errorMessage = message;
