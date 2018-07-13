@@ -1,0 +1,5 @@
+build/* linguist-vendored
+config/* linguist-vendored
+dist/* linguist-vendored
+static/* linguist-vendored
+test/* linguist-vendored
