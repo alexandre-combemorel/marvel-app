@@ -41,19 +41,26 @@ export default {
   },
   methods: {
     search() {
-      // We extract from the URL the different arguments
-      const { type } = this.$route.params;
-      const { key } = this.$route.params;
+      const { path } = this.$route;
+      if (path.includes(`/${CONST.SEARCH_LISTING}/`)) {
+        // We extract from the URL the different arguments
+        const { type } = this.$route.params;
+        const { key } = this.$route.params;
 
-      // Here we activate a loading state before starting an API call
-      // Clean any previous error message
-      this.$store.commit('loadingOn');
-      this.$store.commit('clearErrorMessage');
-      // According to the form we fetch the right data, comic or characters
-      if (type === CONST.TYPE_COMIC) {
-        this.getComics(key);
+        // Here we activate a loading state before starting an API call
+        // Clean any previous error message
+        this.$store.commit('loadingOn');
+        this.$store.commit('clearErrorMessage');
+        // According to the form we fetch the right data, comic or characters
+        if (type === CONST.TYPE_COMIC) {
+          this.getComics(key);
+        } else {
+          this.getCharacters(key);
+        }
       } else {
-        this.getCharacters(key);
+        // if user go back to the root path we reset the listing
+        this.$store.commit('saveLastSearch', { type: CONST.TYPE_COMIC, data: [] });
+        this.$store.commit('saveLastSearch', { type: CONST.TYPE_CHARACTER, data: [] });
       }
     },
     getComics(key) {

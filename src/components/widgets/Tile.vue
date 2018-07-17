@@ -26,7 +26,7 @@ export default {
     },
     description() {
       // if the description too big we truck it
-      return this.tile.description.length > 300 ? `${this.tile.description.substr(0, 200)}...` : '';
+      return this.tile.description !== null && this.tile.description.length > 300 ? `${this.tile.description.substr(0, 200)}...` : '';
     },
   },
   methods: {
